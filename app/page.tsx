@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+/* 🔓 PREVIEW MODE (turn false for final deploy) */
+const DEV_PREVIEW = true;
+
 const days = [
   { name: "Rose Day", emoji: "🌹", href: "/rose-day", date: 7 },
   { name: "Propose Day", emoji: "💍", href: "/propose-day", date: 8 },
@@ -14,34 +17,32 @@ const days = [
   { name: "Valentine’s Day", emoji: "❤️", href: "/valentine-day", date: 14 },
 ];
 
-/* 🚫 safe zone around center text */
+/* 📍 fixed heart positions */
 const heartPositions = [
   { top: "14%", left: "18%" },
   { top: "14%", left: "70%" },
-
   { top: "38%", left: "10%" },
   { top: "38%", left: "85%" },
-
   { top: "65%", left: "20%" },
   { top: "65%", left: "70%" },
-
   { top: "82%", left: "40%" },
   { top: "82%", left: "60%" },
 ];
 
 export default function HomePage() {
   const [today, setToday] = useState<number | null>(null);
+  const [isFeb, setIsFeb] = useState(false);
 
   useEffect(() => {
     const now = new Date();
-    if (now.getMonth() === 1) {
-      setToday(now.getDate());
-    }
+    setIsFeb(now.getMonth() === 1);
+    setToday(now.getDate());
   }, []);
 
   return (
-    <main className="fixed inset-0 md:overflow-hidden overflow-y-auto">
-      {/* 💞 Floating background hearts */}
+    <main className="fixed inset-0 overflow-y-auto md:overflow-hidden">
+
+      {/* 💞 floating background hearts */}
       {Array.from({ length: 18 }).map((_, i) => (
         <span
           key={i}
@@ -56,53 +57,17 @@ export default function HomePage() {
         </span>
       ))}
 
-      {/* 💌 POETIC CENTER TEXT */}
-      <div
-        className="
-          relative md:absolute
-          inset-0
-          flex
-          flex-col
-          items-center
-          justify-start
-          md:justify-center
-          text-center
-          px-4
-          z-10
-          pointer-events-none
-          pt-20
-          md:pt-0
-          md:-translate-y-10
-        "
-      >
+      {/* 💌 center text */}
+      <div className="relative md:absolute inset-0 flex items-center justify-center text-center px-4 z-10 pointer-events-none">
         <div className="space-y-7 max-w-md glass p-8 card-animate">
-          {/* small divider */}
-          <div className="flex items-center justify-center gap-4">
-            <span className="h-px w-14 bg-pink-300/50"></span>
-            <span className="text-xs text-pink-700/80 italic tracking-widest">
-              love you misha
-            </span>
-            <span className="h-px w-14 bg-pink-300/50"></span>
-          </div>
-
-          <h1 className="text-4xl font-semibold glow">
-            For Misha 💖
-          </h1>
+          <h1 className="text-4xl font-semibold glow">For Misha 💖</h1>
 
           <p className="text-sm leading-loose text-pink-900/90">
             Not everything I feel fits into one page.
             <br />
-            Cause Your thoughts are never ending like a huge wave.
+            Your value is like a sun to me.
             <br />
-            Your value,
-            <br />
-            is like a sun to me.
-            <br />
-            Which makes the flower bloom for the world to see.
-            <br />
-            Without you, my worth fades into none,
-            <br />
-            I am yours for eternity, not just for passing fun.
+            I am yours — quietly, completely.
           </p>
 
           <p className="text-xs text-pink-700/80 italic">
@@ -111,20 +76,18 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 👇 Scroll hint — mobile only */}
-      <div className="md:hidden sticky bottom-4 z-30 text-center animate-bounce pointer-events-none mt-6">
-        <div className="text-xs text-pink-700/80 italic">
-          scroll down
-        </div>
-        <div className="text-lg text-pink-600">⌄</div>
-      </div>
-
-      {/* 💖 HEART DAY BUTTONS — DESKTOP (floating) */}
+      {/* 💖 DESKTOP HEARTS */}
       <div className="hidden md:block">
         {days.map((day, index) => {
-          const isToday = today === day.date;
-          const isFuture = today !== null && today < day.date;
           const pos = heartPositions[index];
+
+          const isToday = today === day.date && isFeb;
+
+          const isFuture =
+            !DEV_PREVIEW &&
+            today !== null &&
+            isFeb &&
+            today < day.date;
 
           return (
             <Link
@@ -134,21 +97,22 @@ export default function HomePage() {
               style={{ top: pos.top, left: pos.left }}
             >
               <div
-                className={`
-                  heart-svg
+                className={`heart-svg
                   ${isToday ? "heart-today" : ""}
                   ${isFuture ? "heart-locked" : ""}
                 `}
               >
                 <svg viewBox="0 0 512 512" aria-hidden>
-                  <path d="M471.701 73.383c-54.5-46.4-136-38.3-186.4 13.7L256 116.6l-29.3-29.5c-50.4-52-131.9-60.1-186.4-13.7-62.1 52.9-66.1 149.8-9.4 207.1l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.7-57.3 52.7-154.2-9.5-207.1z" />
+                  <path d="M471.7 73.4c-54.5-46.4-136-38.3-186.4 13.7L256 116.6l-29.3-29.5C176.3 35.1 94.8 27 40.3 73.4-21.8 126.3-25.8 223.2 30.9 280.5l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.7-57.3 52.7-154.2-9.5-207.1z" />
                 </svg>
 
                 <div className="heart-content">
                   <span className="text-xl">{day.emoji}</span>
                   <span className="text-xs mt-1">{day.name}</span>
                   {isFuture && (
-                    <span className="text-xs mt-1 opacity-80">locked</span>
+                    <span className="text-xs mt-1 opacity-80">
+                      locked
+                    </span>
                   )}
                 </div>
               </div>
@@ -157,12 +121,16 @@ export default function HomePage() {
         })}
       </div>
 
-      {/* 💗 HEART DAY BUTTONS — MOBILE (tiles) */}
+      {/* 💗 MOBILE HEART GRID */}
       <div className="md:hidden w-full px-4 mt-10 mb-10 z-20">
         <div className="grid grid-cols-2 gap-4">
           {days.map((day) => {
-            const isToday = today === day.date;
-            const isFuture = today !== null && today < day.date;
+            const isToday = today === day.date && isFeb;
+            const isFuture =
+              !DEV_PREVIEW &&
+              today !== null &&
+              isFeb &&
+              today < day.date;
 
             return (
               <Link
@@ -174,7 +142,9 @@ export default function HomePage() {
                 `}
               >
                 <div className="text-2xl">{day.emoji}</div>
-                <div className="text-sm mt-1 font-medium">{day.name}</div>
+                <div className="text-sm mt-1 font-medium">
+                  {day.name}
+                </div>
                 {isFuture && (
                   <div className="text-xs mt-1 italic">locked</div>
                 )}
@@ -183,6 +153,7 @@ export default function HomePage() {
           })}
         </div>
       </div>
+
     </main>
   );
 }
