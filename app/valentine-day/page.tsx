@@ -158,13 +158,12 @@ It’s a quiet confession I’ve been carrying for a while.`}
 
             <p className="text-sm leading-relaxed text-[#4a1030]">
               I don’t promise perfection.  
-              I don’t promise forever.
             </p>
 
             <p className="text-sm leading-relaxed text-[#4a1030]">
               But I promise honesty.  
               I promise effort.  
-              And if you choose me —
+              I promise forever-
               I’ll choose you every single day.
             </p>
 
@@ -192,8 +191,8 @@ It’s a quiet confession I’ve been carrying for a while.`}
       <p className="text-sm leading-relaxed text-[#5a1a3c]">
         I didn’t plan any of this.
         <br />
-        I just kept liking you…
-        and somehow ended up here.
+        I just kept loving you…
+        and somehow ended up in your heart.
       </p>
 
       <p className="text-sm text-rose-500 font-medium">
