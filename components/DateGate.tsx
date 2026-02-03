@@ -1,6 +1,6 @@
 "use client";
 
-const DEV_PREVIEW = true; // 👈 change to false before final deploy
+const DEV_PREVIEW = false; // 👈 change to false before final deploy
 
 export default function DateGate({
   day,
