@@ -1,92 +1,160 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import dynamic from "next/dynamic";
+
 import DateGate from "../../components/DateGate";
 import RomanticCard from "../../components/RomanticCard";
 import LoveTypewriter from "../../components/LoveTypewriter";
 import NightSkyGlow from "../../components/NightSkyGlow";
-import ChocolateCatchGame from "../../components/ChocolateCatchGame";
+
+/* 🎮 Lazy-loaded game (does NOT block FPS) */
+const ChocolateCatchGame = dynamic(
+  () => import("../../components/ChocolateCatchGame"),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="text-white/50 text-sm tracking-wide">
+        Preparing something sweet… 🍫
+      </p>
+    ),
+  }
+);
 
 export default function ChocolateDay() {
   const secretRef = useRef<HTMLParagraphElement | null>(null);
-const isMobile =
-  typeof window !== "undefined" && window.innerWidth < 640;
+  const reduceMotion = useReducedMotion();
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [showSecret, setShowSecret] = useState(false);
+
+  /* ✅ SAFE mobile detection (no hydration lag) */
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 640);
+  }, []);
+
+  /* 🍫 CINEMATIC FLOAT — LIMITED & FINITE (NO INFINITE LOOPS) */
+  const chocolates = useMemo(() => {
+    const count = isMobile ? 3 : 6; // VERY IMPORTANT
+    return Array.from({ length: count }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      size: `${Math.random() * 8 + 14}px`,
+      delay: Math.random() * 2,
+      duration: Math.random() * 6 + 10,
+    }));
+  }, [isMobile]);
 
   return (
     <DateGate day={9}>
-      {/* 🌌 Background Glow */}
+      {/* 🌌 BACKGROUND (static = smooth) */}
       <NightSkyGlow />
-
-      {/* 🌙 Moon Glow */}
       <div className="moon-glow pointer-events-none" />
 
-      {/* ✨ Soft Floating Sparkles */}
-      {Array.from({ length: isMobile ? 6 : 12 }).map((_, i) => (
-  <span
-    key={i}
-    className="heart-bg"
-    style={{
-      left: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 12}s`,
-      fontSize: `${Math.random() * 10 + 14}px`,
-    }}
-  >
-    🍫
-  </span>
-))}
+      {/* 🍫 FLOATING CHOCOLATES (ONE-TIME CINEMATIC PASS) */}
+      {!reduceMotion &&
+        chocolates.map((c, i) => (
+          <motion.span
+            key={i}
+            className="heart-bg"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: [0, 0.8, 0], y: [-30, 30] }}
+            transition={{
+              delay: c.delay,
+              duration: c.duration,
+              ease: "easeInOut",
+            }}
+            style={{
+              left: c.left,
+              fontSize: c.size,
+            }}
+          >
+            🍫
+          </motion.span>
+        ))}
 
-      {/* 💝 Main Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 text-center space-y-10">
-
-        {/* 🍫 Romantic Card */}
-        <RomanticCard
-          title="🍫 Misha"
-          text={`Under a quiet night sky, even chocolate feels shy next to you.
+      {/* 🎬 MAIN SCENE */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 text-center space-y-12"
+      >
+        {/* 💝 HERO CARD (NO LOOPING SCALE) */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <RomanticCard
+            title="🍫 Misha"
+            text={`Under a quiet night sky, even chocolate feels shy next to you.
 You glow — softly, endlessly — in my heart.`}
-        />
+          />
+        </motion.div>
 
-        {/* ✍️ Love Message */}
-        <div className="max-w-md w-full rounded-[26px] bg-white/10 backdrop-blur-xl px-7 py-8 border border-white/20 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
+        {/* ✍️ LOVE LETTER (NO BACKDROP BLUR = HUGE FPS WIN) */}
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.9 }}
+          className="max-w-md w-full rounded-[26px] bg-white/8 px-7 py-8 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+        >
           <LoveTypewriter />
-
-          <p className="mt-6 text-white/80 text-sm leading-relaxed">
+          <p className="mt-6 text-white/80 text-sm leading-relaxed tracking-wide">
             In every universe,
             <br />
             I’d still choose you. 🌙❤️
           </p>
-        </div>
+        </motion.div>
 
-        {/* 🎮 Chocolate Game */}
-        <ChocolateCatchGame />
+        {/* 🎮 GAME (APPEARS AFTER SCENE SETTLES) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <ChocolateCatchGame />
+        </motion.div>
 
-        {/* 💌 Secret Message */}
-        <details
+        {/* 💌 FINAL REVEAL (STILLNESS → EMOTION) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
           className="text-white/70 text-xs"
-          onToggle={(e) => {
-            const el = e.currentTarget;
-            if (el.open) {
+        >
+          <button
+            onClick={() => {
+              setShowSecret(true);
               setTimeout(() => {
                 secretRef.current?.scrollIntoView({
                   behavior: "smooth",
                   block: "center",
                 });
-              }, 200);
-            }
-          }}
-        >
-          <summary className="cursor-pointer select-none tracking-wide hover:text-white transition">
-            💌 Tap for a secret
-          </summary>
-
-          <p
-            ref={secretRef}
-            className="mt-3 italic text-white/90 text-sm"
+              }, 300);
+            }}
+            className="tracking-widest hover:text-white transition"
           >
-            Even chocolate melts slower than my heart does for you.
-          </p>
-        </details>
+            💌 tap for the truth
+          </button>
 
-      </div>
+          <AnimatePresence>
+            {showSecret && (
+              <motion.p
+                ref={secretRef}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="mt-4 italic text-white/95 text-sm"
+              >
+                Even chocolate melts slower than my heart does for you.
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.div>
     </DateGate>
   );
 }

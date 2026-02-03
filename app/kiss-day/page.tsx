@@ -6,25 +6,16 @@ import RomanticCard from "../../components/RomanticCard";
 import LoveMeter from "../../components/LoveMeter";
 
 export default function KissDay() {
-  // 0 game1
-  // 1 letter1
-  // 2 game2
-  // 3 letter2
-  // 4 game3
-  // 5 letter3
-  // 6 final
   const [stage, setStage] = useState(0);
-
   const [revealed, setRevealed] = useState(false);
   const [choice, setChoice] = useState<string | null>(null);
   const [dragX, setDragX] = useState(0);
   const [kiss, setKiss] = useState(false);
   const [lineComplete, setLineComplete] = useState(false);
 
-
   return (
     <DateGate day={13}>
-      {/* 💞 Floating background hearts */}
+      {/* 💞 Floating background kisses */}
       {Array.from({ length: 18 }).map((_, i) => (
         <span
           key={i}
@@ -38,8 +29,12 @@ export default function KissDay() {
           💋
         </span>
       ))}
-      <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-pink-100 via-rose-100 to-pink-200 overflow-hidden">
-        <div className="w-full max-w-sm text-center space-y-6 transition-all duration-700">
+
+      <div className="relative min-h-screen flex items-center justify-center px-4
+                      bg-gradient-to-br from-pink-100 via-rose-100 to-pink-200
+                      overflow-hidden">
+
+        <div className="w-full max-w-sm text-center space-y-8 cinematic">
 
           <RomanticCard
             title="💋 Misha"
@@ -50,22 +45,26 @@ export default function KissDay() {
 
           {/* ================= GAME 1 ================= */}
           {stage === 0 && (
-            <div className="space-y-6 animate-fade">
+            <section className="scene space-y-6">
               <p className="text-sm text-gray-700">
                 Tap the heart when you feel ready 💓
               </p>
 
-              <button
-                onClick={() => setRevealed(true)}
-                className="mx-auto w-28 h-28 rounded-full bg-pink-200 text-4xl
-                           transition-transform duration-500 hover:scale-110 select-none"
-              >
-                💓
-              </button>
+              <div className="py-2 flex justify-center">
+                <button
+                  onClick={() => setRevealed(true)}
+                  className="w-28 h-28 rounded-full bg-pink-200 text-4xl
+                             smooth hover:scale-[1.04] active:scale-95"
+                >
+                  💓
+                </button>
+              </div>
 
               <p
-                className={`text-gray-800 transition-all duration-700 ${
-                  revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                className={`text-gray-800 smooth ${
+                  revealed
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
                 }`}
               >
                 Some moments don’t need to be perfect.
@@ -74,79 +73,85 @@ export default function KissDay() {
               </p>
 
               {revealed && (
-                <button
-                  onClick={() => setStage(1)}
-                  className="w-full py-3 rounded-xl bg-white/80 transition-all"
-                >
-                  Continue 🤍
-                </button>
+                <div className="py-2">
+                  <button
+                    onClick={() => setStage(1)}
+                    className="w-full py-3 rounded-xl bg-white/80
+                               smooth hover:scale-[1.04]"
+                  >
+                    Continue 🤍
+                  </button>
+                </div>
               )}
-            </div>
+            </section>
           )}
 
           {/* ================= LETTER 1 ================= */}
           {stage === 1 && (
-            <div className="space-y-4 animate-fade">
+            <section className="scene space-y-6">
               <p className="italic text-gray-800 leading-relaxed">
                 I don’t believe kisses are about lips.
                 <br />
                 I think they’re about pauses.
                 <br />
-                About that quiet second where nothing else matters,
-                <br />
-                except the closeness.
+                About that quiet second where nothing else matters.
               </p>
 
-              <button
-                onClick={() => setStage(2)}
-                className="w-full py-3 rounded-xl bg-white/80"
-              >
-                Continue 🌷
-              </button>
-            </div>
+              <div className="py-2">
+                <button
+                  onClick={() => setStage(2)}
+                  className="w-full py-3 rounded-xl bg-white/80
+                             smooth hover:scale-[1.04]"
+                >
+                  Continue 🌷
+                </button>
+              </div>
+            </section>
           )}
 
           {/* ================= GAME 2 ================= */}
           {stage === 2 && (
-            <div className="space-y-6 animate-fade">
+            <section className="scene space-y-6">
               <p className="text-sm text-gray-700">
                 Choose the words that feel right 🤍
               </p>
 
               <div className="grid grid-cols-2 gap-4">
                 {["Gentle", "Unrushed", "Warm", "Safe"].map((w) => (
-                  <button
-                    key={w}
-                    onClick={() => setChoice(w)}
-                    className={`py-3 rounded-xl transition-all duration-300
-                      ${
-                        choice === w
-                          ? "bg-pink-300 scale-105"
-                          : "bg-pink-200"
-                      }`}
-                  >
-                    {w}
-                  </button>
+                  <div key={w} className="py-1">
+                    <button
+                      onClick={() => setChoice(w)}
+                      className={`w-full py-3 rounded-xl smooth
+                        ${
+                          choice === w
+                            ? "bg-pink-300 scale-[1.04]"
+                            : "bg-pink-200 hover:scale-[1.04]"
+                        }`}
+                    >
+                      {w}
+                    </button>
+                  </div>
                 ))}
               </div>
 
               {choice && (
-                <button
-                  onClick={() => setStage(3)}
-                  className="w-full py-3 rounded-xl bg-white/80 transition-all"
-                >
-                  Continue 💗
-                </button>
+                <div className="py-2">
+                  <button
+                    onClick={() => setStage(3)}
+                    className="w-full py-3 rounded-xl bg-white/80
+                               smooth hover:scale-[1.04]"
+                  >
+                    Continue 💗
+                  </button>
+                </div>
               )}
-            </div>
+            </section>
           )}
 
           {/* ================= LETTER 2 ================= */}
           {stage === 3 && (
-            <div className="space-y-4 animate-fade">
+            <section className="scene space-y-6">
               <p className="italic text-gray-800 leading-relaxed">
-                That’s how I imagine it.
-                <br />
                 Not rushed.
                 <br />
                 Not loud.
@@ -156,73 +161,76 @@ export default function KissDay() {
                 that the world fades quietly.
               </p>
 
-              <button
-                onClick={() => setStage(4)}
-                className="w-full py-3 rounded-xl bg-white/80"
-              >
-                Continue 🤍
-              </button>
-            </div>
+              <div className="py-2">
+                <button
+                  onClick={() => setStage(4)}
+                  className="w-full py-3 rounded-xl bg-white/80
+                             smooth hover:scale-[1.04]"
+                >
+                  Continue 🤍
+                </button>
+              </div>
+            </section>
           )}
 
           {/* ================= GAME 3 ================= */}
-{stage === 4 && (
-  <div className="space-y-6 animate-fade">
-    <p className="text-sm text-gray-700">
-      Bring the heart closer 💞
-    </p>
+          {stage === 4 && (
+            <section className="scene space-y-6">
+              <p className="text-sm text-gray-700">
+                Bring the heart closer 💞
+              </p>
 
-    <input
-      type="range"
-      min={0}
-      max={100}
-      value={dragX}
-      onChange={(e) => {
-        const val = Number(e.target.value);
-        setDragX(val);
-        if (val === 100) setLineComplete(true);
-      }}
-      className="w-full accent-pink-400"
-    />
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={dragX}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setDragX(val);
+                  if (val === 100) setLineComplete(true);
+                }}
+                className="w-full accent-pink-400"
+              />
 
-    <div
-      className="text-4xl transition-transform duration-500"
-      style={{ transform: `scale(${1 + dragX / 200})` }}
-    >
-      💓
-    </div>
+              <div
+                className="text-4xl smooth"
+                style={{ transform: `scale(${1 + dragX / 180})` }}
+              >
+                💓
+              </div>
 
-    <p
-      className={`text-gray-800 transition-all duration-700 ${
-        lineComplete
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4"
-      }`}
-    >
-      Right here… this closeness is everything.
-    </p>
+              <p
+                className={`text-gray-800 smooth ${
+                  lineComplete
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
+                }`}
+              >
+                Right here… this closeness is everything.
+              </p>
 
-    {lineComplete && (
-      <button
-        onClick={() => {
-          setLineComplete(false);
-          setStage(5);
-        }}
-        className="w-full py-3 rounded-xl bg-white/80 transition-opacity duration-500"
-      >
-        Continue 🌸
-      </button>
-    )}
-  </div>
-)}
-
+              {lineComplete && (
+                <div className="py-2">
+                  <button
+                    onClick={() => {
+                      setLineComplete(false);
+                      setStage(5);
+                    }}
+                    className="w-full py-3 rounded-xl bg-white/80
+                               smooth hover:scale-[1.04]"
+                  >
+                    Continue 🌸
+                  </button>
+                </div>
+              )}
+            </section>
+          )}
 
           {/* ================= LETTER 3 ================= */}
           {stage === 5 && (
-            <div className="space-y-4 animate-fade">
+            <section className="scene space-y-6">
               <p className="italic text-gray-800 leading-relaxed">
-                Right here…
-                <br />
                 This closeness.
                 <br />
                 This quiet certainty.
@@ -232,51 +240,98 @@ export default function KissDay() {
                 I’d always choose.
               </p>
 
-              <button
-                onClick={() => setStage(6)}
-                className="w-full py-3 rounded-xl bg-white/80"
-              >
-                Continue 💋
-              </button>
-            </div>
+              <div className="py-2">
+                <button
+                  onClick={() => setStage(6)}
+                  className="w-full py-3 rounded-xl bg-white/80
+                             smooth hover:scale-[1.04]"
+                >
+                  Continue 💋
+                </button>
+              </div>
+            </section>
           )}
 
           {/* ================= FINAL ================= */}
           {stage === 6 && (
-            <div className="space-y-6 animate-fade">
-              <button
-                onClick={() => setKiss(true)}
-                className="w-full py-4 rounded-xl bg-pink-400 text-white text-lg"
-              >
-                Kiss 💋
-              </button>
-            </div>
+            <section className="scene space-y-6">
+              <div className="py-2">
+                <button
+                  onClick={() => setKiss(true)}
+                  className="w-full py-4 rounded-xl bg-pink-400
+                             text-white text-lg
+                             smooth hover:scale-[1.04] active:scale-95"
+                >
+                  Kiss 💋
+                </button>
+              </div>
+            </section>
           )}
         </div>
 
         {/* ================= KISS OVERLAY ================= */}
         {kiss && (
           <div className="absolute inset-0 flex items-center justify-center
-                          bg-pink-200/70 backdrop-blur-sm animate-fade">
-            <div className="text-7xl transition-transform duration-700 scale-110">
-              💋
-            </div>
+                          bg-pink-200/80 backdrop-blur-md cinematic">
+            <div className="text-8xl kiss-pop">💋</div>
           </div>
         )}
 
-        {/* Animation helper */}
+        {/* ================= CINEMATIC STYLES ================= */}
         <style>{`
-          .animate-fade {
-            animation: fade 0.6s ease-out both;
+          button {
+            transform-origin: center;
+            will-change: transform;
           }
-          @keyframes fade {
+
+          .smooth {
+            transition: all 0.6s cubic-bezier(.22,1,.36,1);
+          }
+
+          .cinematic {
+            animation: cinematicIn 0.8s cubic-bezier(.22,1,.36,1) both;
+          }
+
+          .scene {
+            animation: sceneIn 0.7s cubic-bezier(.22,1,.36,1) both;
+          }
+
+          .kiss-pop {
+            animation: kissPop 1s cubic-bezier(.22,1,.36,1) both;
+          }
+
+          @keyframes sceneIn {
             from {
               opacity: 0;
-              transform: translateY(12px);
+              transform: scale(0.96) translateY(14px);
+              filter: blur(6px);
             }
             to {
               opacity: 1;
-              transform: translateY(0);
+              transform: scale(1) translateY(0);
+              filter: blur(0);
+            }
+          }
+
+          @keyframes cinematicIn {
+            from {
+              opacity: 0;
+              filter: blur(12px);
+            }
+            to {
+              opacity: 1;
+              filter: blur(0);
+            }
+          }
+
+          @keyframes kissPop {
+            from {
+              opacity: 0;
+              transform: scale(0.6);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1.15);
             }
           }
         `}</style>

@@ -7,7 +7,7 @@ export default function BearHug() {
         <img
           src="/hugging.gif"
           alt="Bear Hug"
-          className="bear-hug"
+          className="bear-hug-gif"
         />
       </div>
     </div>

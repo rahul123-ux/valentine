@@ -1,41 +1,64 @@
 "use client";
+
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoveTap() {
-  const [love, setLove] = useState(0);
+  const [count, setCount] = useState(0);
+  const [locked, setLocked] = useState(false);
+  const [showHeart, setShowHeart] = useState(false);
+
+  const handleTap = () => {
+    if (locked) return;
+
+    setLocked(true);
+    setCount((c) => c + 1);
+    setShowHeart(true);
+
+    // hide floating heart
+    setTimeout(() => setShowHeart(false), 400);
+
+    // unlock tap (prevents rapid spam)
+    setTimeout(() => setLocked(false), 350);
+  };
 
   return (
-    <div className="max-w-md mx-auto px-4 mt-6">
-      <div className="glass rounded-2xl p-4 text-center border border-white/40">
-        <h3 className="text-lg mb-3 text-rose-600 drop-shadow-sm">
-          Tap to grow my love for you 💗
-        </h3>
-
-        <button
-          onClick={() => setLove((v) => Math.min(v + 5, 100))}
-          className="
-            mt-3 px-8 py-3 rounded-full
-            bg-pink-500/50 hover:bg-pink-500/70
-            transition active:scale-95
-            text-lg text-white
-          "
-        >
-          💖 Tap
-        </button>
-
-        <p className="mt-3 text-rose-600">
-          Love Level:{" "}
-          <span className="text-rose-700 font-medium">
-            {love}%
-          </span>
-        </p>
-
-        {love === 100 && (
-          <p className="mt-2 text-sm italic text-rose-500">
-            Okay… it’s full now 🥺
-          </p>
+    <div className="flex flex-col items-center gap-3 pt-4">
+      {/* ❤️ Floating feedback heart */}
+      <AnimatePresence>
+        {showHeart && (
+          <motion.span
+            initial={{ opacity: 0, y: 0, scale: 0.8 }}
+            animate={{ opacity: 1, y: -30, scale: 1.2 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute text-2xl"
+          >
+            ❤️
+          </motion.span>
         )}
-      </div>
+      </AnimatePresence>
+
+      {/* 💖 Tap Button */}
+      <motion.button
+        onClick={handleTap}
+        whileTap={{ scale: 0.9 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+        className="rounded-full px-7 py-3 bg-pink-500 text-white font-semibold shadow-lg active:shadow-md select-none"
+      >
+        Tap with Love 💞
+      </motion.button>
+
+      {/* 💗 Counter */}
+      <motion.div
+        key={count}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+        className="text-sm text-pink-700"
+      >
+        Love taps: {count}
+      </motion.div>
     </div>
   );
 }

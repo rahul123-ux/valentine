@@ -65,9 +65,17 @@ export default function HomePage() {
           <p className="text-sm leading-loose text-pink-900/90">
             Not everything I feel fits into one page.
             <br />
-            Your value is like a sun to me.
+            Cause Your thoughts are never ending like a huge wave.
             <br />
-            I am yours — quietly, completely.
+            Your value,
+            <br />
+            is like a sun to me.
+            <br />
+            Which makes the flower bloom for the world to see.
+            <br />
+            Without you, my worth fades into none,
+            <br />
+            I am yours for eternity, not just for passing fun.
           </p>
 
           <p className="text-xs text-pink-700/80 italic">
