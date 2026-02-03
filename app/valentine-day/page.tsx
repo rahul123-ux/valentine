@@ -20,8 +20,8 @@ export default function ValentineDay() {
   const [step, setStep] = useState<Step>("intro");
   const [warmth, setWarmth] = useState(0);
   const [showFinalText, setShowFinalText] = useState(false);
-const isMobile =
-  typeof window !== "undefined" && window.innerWidth < 640;
+  const isMobile =
+    typeof window !== "undefined" && window.innerWidth < 640;
 
   /* 🌙 CINEMATIC TIMING */
   useEffect(() => {
@@ -34,18 +34,18 @@ const isMobile =
   return (
     <DateGate day={14}>
       {Array.from({ length: isMobile ? 6 : 12 }).map((_, i) => (
-  <span
-    key={i}
-    className="heart-bg"
-    style={{
-      left: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 12}s`,
-      fontSize: `${Math.random() * 10 + 14}px`,
-    }}
-  >
-    🌸
-  </span>
-))}
+        <span
+          key={i}
+          className="heart-bg"
+          style={{
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 12}s`,
+            fontSize: `${Math.random() * 10 + 14}px`,
+          }}
+        >
+          🌸
+        </span>
+      ))}
 
       {/* 🌸 INTRO */}
       {step === "intro" && (
@@ -102,9 +102,8 @@ It’s a quiet confession I’ve been carrying for a while.`}
               }
               className="mx-auto w-44 h-44 rounded-full flex items-center justify-center cursor-pointer border border-pink-300 transition-all"
               style={{
-                background: `radial-gradient(circle, rgba(255,182,193,${
-                  warmth / 100
-                }) 0%, rgba(255,240,245,1) 70%)`,
+                background: `radial-gradient(circle, rgba(255,182,193,${warmth / 100
+                  }) 0%, rgba(255,240,245,1) 70%)`,
                 boxShadow: `0 0 ${warmth}px rgba(255,105,180,0.6)`,
               }}
             >
@@ -157,18 +156,30 @@ It’s a quiet confession I’ve been carrying for a while.`}
             </h2>
 
             <p className="text-sm leading-relaxed text-[#4a1030]">
-              I don’t promise perfection.  
+              I don’t promise perfection.
             </p>
 
             <p className="text-sm leading-relaxed text-[#4a1030]">
-              But I promise honesty.  
-              I promise effort.  
-              I promise forever-
-              I’ll choose you every single day.
+              But I promise truth, even when it’s difficult.
+              I promise effort, even on the days I feel tired.
+              I promise to grow, to learn, and to love you more gently with time.
+            </p>
+
+            <p className="text-sm leading-relaxed text-[#4a1030]">
+              I promise that in a world full of distractions,
+              my heart will always know where it belongs.
+            </p>
+
+            <p className="text-sm leading-relaxed text-[#4a1030]">
+              I’ll choose you —
+              in calm days and hard ones,
+              in silence and in laughter,
+              every single day.
             </p>
 
             <p className="text-rose-500 font-medium text-sm">
-              And that… is rare.
+              And that kind of love…
+              is rare.
             </p>
 
             <button
@@ -180,89 +191,89 @@ It’s a quiet confession I’ve been carrying for a while.`}
           </div>
         </section>
       )}
-{/* 💍 SOFT MOMENT (NO CHOICE) */}
-{step === "choice" && (
-  <section className="min-h-screen flex flex-col justify-center px-6">
-    <div className="max-w-md mx-auto rounded-3xl bg-[#fffafc] border border-pink-200 shadow-xl p-8 text-center space-y-4">
-      <p className="text-sm leading-relaxed text-[#5a1a3c]">
-        Small confession 😶‍🌫️
-      </p>
+      {/* 💍 SOFT MOMENT (NO CHOICE) */}
+      {step === "choice" && (
+        <section className="min-h-screen flex flex-col justify-center px-6">
+          <div className="max-w-md mx-auto rounded-3xl bg-[#fffafc] border border-pink-200 shadow-xl p-8 text-center space-y-4">
+            <p className="text-sm leading-relaxed text-[#5a1a3c]">
+              Small confession 😶‍🌫️
+            </p>
 
-      <p className="text-sm leading-relaxed text-[#5a1a3c]">
-        I didn’t plan any of this.
-        <br />
-        I just kept loving you…
-        and somehow ended up in your heart.
-      </p>
+            <p className="text-sm leading-relaxed text-[#5a1a3c]">
+              I didn’t plan any of this.
+              <br />
+              I just kept loving you…
+              and somehow ended up in your heart.
+            </p>
 
-      <p className="text-sm text-rose-500 font-medium">
-        Oops 💗
-      </p>
+            <p className="text-sm text-rose-500 font-medium">
+              Oops 💗
+            </p>
 
-      <p className="text-xs text-[#7a1f4a]/70">
-        Anyway… one last thing.
-      </p>
+            <p className="text-xs text-[#7a1f4a]/70">
+              Anyway… one last thing.
+            </p>
 
-      <button
-        onClick={() => setStep("cinematic")}
-        className="mt-4 w-full rounded-full bg-gradient-to-r from-pink-500 to-rose-500 py-3 text-white font-medium shadow-lg active:scale-95 transition"
-      >
-        Continue 😌
-      </button>
-    </div>
-  </section>
-)}
+            <button
+              onClick={() => setStep("cinematic")}
+              className="mt-4 w-full rounded-full bg-gradient-to-r from-pink-500 to-rose-500 py-3 text-white font-medium shadow-lg active:scale-95 transition"
+            >
+              Continue 😌
+            </button>
+          </div>
+        </section>
+      )}
 
 
-    {/* 🌙 CINEMATIC ENDING */}
-{step === "cinematic" && (
-  <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-    {/* Background */}
-    <div className="absolute inset-0 bg-gradient-to-b from-pink-100 via-pink-200 to-pink-300" />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.7),rgba(0,0,0,0.18))]" />
+      {/* 🌙 CINEMATIC ENDING */}
+      {step === "cinematic" && (
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-pink-100 via-pink-200 to-pink-300" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.7),rgba(0,0,0,0.18))]" />
 
-    {/* Floating hearts */}
-    <div className="absolute inset-0 pointer-events-none">
-      {Array.from({ length: isMobile ? 6 : 12 }).map((_, i) => (
-  <span
-    key={i}
-    className="heart-bg"
-    style={{
-      left: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 12}s`,
-      fontSize: `${Math.random() * 10 + 14}px`,
-    }}
-  >
-    🌹
-  </span>
-))}
+          {/* Floating hearts */}
+          <div className="absolute inset-0 pointer-events-none">
+            {Array.from({ length: isMobile ? 6 : 12 }).map((_, i) => (
+              <span
+                key={i}
+                className="heart-bg"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 12}s`,
+                  fontSize: `${Math.random() * 10 + 14}px`,
+                }}
+              >
+                🌹
+              </span>
+            ))}
 
-    </div>
+          </div>
 
-    {/* Content */}
-    <div className="relative z-10 text-center px-6 max-w-xl animate-fadeInSlow">
-      <p className="text-3xl font-semibold text-[#3b0a2a]">
-        Plot twist 😌
-      </p>
+          {/* Content */}
+          <div className="relative z-10 text-center px-6 max-w-xl animate-fadeInSlow">
+            <p className="text-3xl font-semibold text-[#3b0a2a]">
+              Plot twist 😌
+            </p>
 
-      <p className="mt-6 text-lg text-[#5a1a3c] leading-relaxed">
-        You didn’t just scroll through this page.
-      </p>
+            <p className="mt-6 text-lg text-[#5a1a3c] leading-relaxed">
+              You didn’t just scroll through this page.
+            </p>
 
-      <p className="mt-2 text-lg text-[#5a1a3c]">
-        You quietly became my favorite person.
-      </p>
+            <p className="mt-2 text-lg text-[#5a1a3c]">
+              You quietly became my favorite person.
+            </p>
 
-      <p className="mt-6 text-sm text-rose-600 font-medium">
-        Side effects include smiling at your phone for no reason.
-      </p>
+            <p className="mt-6 text-sm text-rose-600 font-medium">
+              Side effects include smiling at your phone for no reason.
+            </p>
 
-      <p className="mt-12 text-base text-[#7a1f4a]">
-        Happy Valentine’s Day 🤍
-      </p>
-    </div>
-  </section>
-)}
+            <p className="mt-12 text-base text-[#7a1f4a]">
+              Happy Valentine’s Day 🤍
+            </p>
+          </div>
+        </section>
+      )}
 
 
 
