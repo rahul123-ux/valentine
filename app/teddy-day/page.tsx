@@ -7,7 +7,6 @@ import LoveMeter from "../../components/LoveMeter";
 export default function TeddyDay() {
   const [heartIndex, setHeartIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const [shuffling, setShuffling] = useState(true);
   const [showScrollHint, setShowScrollHint] = useState(true);
 
   const letterRef = useRef<HTMLDivElement | null>(null);
@@ -16,9 +15,7 @@ export default function TeddyDay() {
     startGame();
 
     const onScroll = () => {
-      if (window.scrollY > 40) {
-        setShowScrollHint(false);
-      }
+      if (window.scrollY > 40) setShowScrollHint(false);
     };
 
     window.addEventListener("scroll", onScroll);
@@ -26,26 +23,19 @@ export default function TeddyDay() {
   }, []);
 
   useEffect(() => {
-    if (isWin && letterRef.current) {
+    if (picked === heartIndex && letterRef.current) {
       setTimeout(() => {
         letterRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
-      }, 700);
+      }, 600);
     }
   }, [picked]);
 
   const startGame = () => {
     setPicked(null);
-    setShuffling(true);
-
-    const index = Math.floor(Math.random() * 3);
-    setHeartIndex(index);
-
-    setTimeout(() => {
-      setShuffling(false);
-    }, 700);
+    setHeartIndex(Math.floor(Math.random() * 3));
   };
 
   const isWin = picked === heartIndex;
@@ -67,11 +57,11 @@ export default function TeddyDay() {
         </span>
       ))}
 
-      {/* 💖 confetti on win */}
+      {/* 💖 confetti */}
       {isWin &&
         Array.from({ length: 22 }).map((_, i) => (
           <span
-            key={`c-${i}`}
+            key={i}
             className="fixed top-0 animate-fall pointer-events-none"
             style={{
               left: `${Math.random() * 100}%`,
@@ -110,15 +100,15 @@ export default function TeddyDay() {
           I want to be both.
         </p>
 
-        {/* 👇 scroll hint */}
+        {/* 👇 scroll hint (closer now) */}
         {showScrollHint && (
-          <p className="mt-6 text-sm text-rose-700/70 italic animate-scrollHint">
+          <p className="mt-3 text-sm text-rose-700/70 italic animate-scrollHint">
             scroll gently ↓
           </p>
         )}
 
         {/* 🎮 game */}
-        <div className="w-full max-w-md mt-12 rounded-3xl bg-white/70 border border-rose-200 backdrop-blur-md shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] px-6 py-8 text-center">
+        <div className="w-full max-w-md mt-10 rounded-3xl bg-white/70 border border-rose-200 backdrop-blur-md shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] px-6 py-8 text-center">
           <h3 className="text-lg font-semibold text-rose-700 mb-1">
             Where Did I Hide My Heart?
           </h3>
@@ -131,7 +121,7 @@ export default function TeddyDay() {
             {[0, 1, 2].map((i) => (
               <button
                 key={i}
-                disabled={picked !== null || shuffling}
+                disabled={picked !== null}
                 onClick={() => setPicked(i)}
                 className="aspect-square rounded-2xl text-3xl border border-rose-300 bg-rose-100 transition hover:scale-105 active:scale-95"
               >
@@ -228,7 +218,7 @@ export default function TeddyDay() {
         @keyframes scrollHint {
           0% {
             opacity: 0;
-            transform: translateY(-4px);
+            transform: translateY(-3px);
           }
           50% {
             opacity: 1;
@@ -236,11 +226,11 @@ export default function TeddyDay() {
           }
           100% {
             opacity: 0;
-            transform: translateY(-4px);
+            transform: translateY(-3px);
           }
         }
         .animate-scrollHint {
-          animation: scrollHint 2.2s ease-in-out infinite;
+          animation: scrollHint 2s ease-in-out infinite;
         }
       `}</style>
     </DateGate>
