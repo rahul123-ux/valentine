@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const DEV_PREVIEW = false; // 👈 set to false before final deploy
+const DEV_PREVIEW = false; // keep false for real logic
 
 export default function DateGate({
   day,
@@ -11,6 +11,9 @@ export default function DateGate({
   day: number;
   children: React.ReactNode;
 }) {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [checkedStorage, setCheckedStorage] = useState(false);
+
   const now = new Date();
   const today = now.getDate();
   const isFeb = now.getMonth() === 1;
@@ -31,28 +34,43 @@ export default function DateGate({
     return () => clearInterval(interval);
   }, []);
 
-  // 🔓 Preview mode
+  // 🔓 Check localStorage on mount
+  useEffect(() => {
+    const unlocked = localStorage.getItem(`unlocked-${day}`);
+    if (unlocked === "true") {
+      setIsUnlocked(true);
+    }
+    setCheckedStorage(true);
+  }, [day]);
+
+  // 🔥 Unlock automatically if date has arrived or passed
+  useEffect(() => {
+    if (isFeb && today >= day) {
+      localStorage.setItem(`unlocked-${day}`, "true");
+      setIsUnlocked(true);
+    }
+  }, [isFeb, today, day]);
+
+  // If already unlocked
+  if (isUnlocked) {
+    return <>{children}</>;
+  }
+
+  // Wait until storage check completes
+  if (!checkedStorage) return null;
+
+  // Preview mode
   if (DEV_PREVIEW) {
     return <>{children}</>;
   }
 
-  // 🌸 Locked — too early
+  // Too early
   if (!isFeb || today < day) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center px-6 text-center"
-        style={{
-          background:
-            "linear-gradient(to bottom, #fff1f2, #fce7f3, #fbcfe8)",
-        }}
-      >
+      <div className="min-h-screen flex items-center justify-center px-6 text-center bg-gradient-to-b from-rose-50 via-pink-100 to-pink-200">
         <div className="max-w-md space-y-6">
           <p className="text-pink-600 text-xl font-light tracking-wide">
             This moment is still waiting 🤍
-          </p>
-
-          <p className="text-pink-500 text-lg">
-            It will open on
           </p>
 
           <p className="text-pink-700 text-3xl font-semibold">
@@ -68,28 +86,6 @@ export default function DateGate({
     );
   }
 
-  // 🌙 Passed
-  if (today > day) {
-    return (
-      <div
-        className="min-h-screen flex items-center justify-center px-6 text-center"
-        style={{
-          background:
-            "linear-gradient(to bottom, #fff1f2, #fce7f3)",
-        }}
-      >
-        <div className="space-y-4">
-          <p className="text-pink-600 text-xl">
-            This day has passed 🌙
-          </p>
-          <p className="text-pink-500 italic">
-            But the feeling stays.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // ❤️ Right day — unlock
-  return <>{children}</>;
+  // Fallback (should never hit now)
+  return null;
 }
