@@ -246,7 +246,7 @@ It’s a quiet confession I’ve been carrying for a while.`}
             </h2>
 
             <p className="text-sm text-[#7a1f4a]/70 mb-6">
-              Hold the one that feels most true 💞
+              Click on the one that feels most true 💞
             </p>
 
             {["Safe", "Calm", "Wanted", "Happy"].map((f) => (
